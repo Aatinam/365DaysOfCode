@@ -5,8 +5,6 @@
 #The solution set must not contain duplicate subsets. Return the solution in any order.
 
 
-
-
 class Solution:
     def subsets(self, nums) :
         ans = [[]];
