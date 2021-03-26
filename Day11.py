@@ -5,54 +5,39 @@
 # (similar to C/C++'s atoi function).
 
 class Solution:
-    def indexOfFirstNonWhitSpaceChar(self, s):
-        i = 0;
-        while(i<len(s) and s[i] == " "):
+   def myAtoi(self, s):
+        if len(s) == 0:
+            return 0;
+        i=0
+        while(i < len(s) and s[i] == " "):
+            i+=1
+        if i == len(s):
+            return 0;
+        isNegative = False;
+        if s[i] == "+" or s[i] == "-":
+            isNegative = s[i] == "-";
             i+=1;
-        return min(i, len(s)-1);
-    
-    def getIndexOfFirstNumIfAny(self, s, i):
-        if s[i] == "-" or s[i]== "+":
-            i= i+1;
-        while(i < len(s) and s[i] == "0"):
-            i+=1;
-        if i>= len(s) or s[i] not in "123456789":
-            return -1;
-        else:
-            return i;
+        if i == len(s):
+            return 0;
         
-    def getIndexOfLastNum(self, s, i):
-        j=i;
-        while(j < len(s) and s[j] in "0123456789"):
-            j+=1;
-        return j;
+        INT_MAX = (2**31) - 1;
+        INT_MIN = -2**31;
+        result = 0        
+        while(i <len(s) and ord(s[i]) >= ord("0") and ord(s[i]) <= ord("9")): 
+            numToAdd = ord(s[i]) - ord("0"); #example: Ascii value of 1 is 49, ascii of 0 is 48. 49-48 = 1
+            if result > INT_MAX/10 or (result == INT_MAX/10 and numToAdd > INT_MAX%10):
+                if isNegative:
+                    return INT_MIN;
 
-    def clampNumIfRequired(self, num):
-        lowerBound = -2**31;
-        upperBound = 2**31 - 1;
-        if num < lowerBound:
-            return lowerBound;
-        if num > upperBound:
-            return upperBound;
-        return num;
-    
-    def myAtoi(self, s):
-        if len(s) < 1:
-            return 0;
-        i = self.indexOfFirstNonWhitSpaceChar(s);        
-        isNegative = s[i] == "-";
-        i = self.getIndexOfFirstNumIfAny(s, i);
-        if i == -1:
-            return 0;
-        j = self.getIndexOfLastNum(s, i);
-        requiredSubstring = s[i:j];
-        requiredNum = int(requiredSubstring); 
+                return INT_MAX;
+            else:
+                result = 10*result + numToAdd;
+            i+=1
+            
         if isNegative:
-            requiredNum = requiredNum*-1;
-        finalNum = self.clampNumIfRequired(requiredNum);
-        return finalNum;
-        
+            return -1*result;
+        return result;
 
 if __name__ == "__main__":
   sol = Solution();
-  print(sol.myAtoi("+-12"));
+  print(sol.myAtoi("2147483648"));
