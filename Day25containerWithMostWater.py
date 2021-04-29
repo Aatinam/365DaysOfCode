@@ -23,6 +23,8 @@ class Solution:
                 j = j+1
                 
             else: #one of these conditions must always be true since a number can be >, < or = any other number. 
+                 #Since we update area for both i and j at each point, the maxWidth area has already been recorded. i.e area is 
+                 #only updated when height trumps width 
                 i = i-1
                 j = j+1
                 
